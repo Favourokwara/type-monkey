@@ -118,3 +118,10 @@ export class LinkedList implements List {
     /**Returns boolean indicating whether or not the list is empty. */
     isEmpty(): boolean { return this.size === 0; }
 }
+
+export class DoublyLinkedList extends LinkedList implements DoublyList {
+
+    public head?: DoublyNode = undefined;
+    public tail?: DoublyNode = undefined;
+    constructor(equalsFn: Function = defaultEquals) { super(equalsFn); }
+}
