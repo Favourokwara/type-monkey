@@ -41,7 +41,7 @@ export class LinkedList implements List {
      */
     insert(element: any, index: number): boolean {
         // checks if the index is within range
-        if (index >= 0 && index < this.size) {
+        if (index >= 0 && index <= this.size) {
             const node = new LinkedNode(element);
             let current = this.head;
 
