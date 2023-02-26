@@ -30,6 +30,7 @@ export class LinkedList implements List {
             while (current?.next != null) { current = current.next; }
             current.next = node;
         }
+        this.size++;
     }
 
     /**
