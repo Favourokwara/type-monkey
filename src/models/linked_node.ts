@@ -10,7 +10,6 @@ export class LinkedNode implements ListNode {
     getValue(): any { return this.value; }
 };
 
-export class DoublyNode extends LinkedNode implements DoublyListNode {
-    constructor(value: any, public prev?: DoublyNode, next?: DoublyNode)
-    { super(value, next) }
+export class DoublyNode extends LinkedNode implements DoublyListNode { 
+    constructor(value: any, public prev?: DoublyNode, public next?: DoublyNode) { super(value, next) }
 }
