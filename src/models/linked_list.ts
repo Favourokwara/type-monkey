@@ -124,4 +124,77 @@ export class DoublyLinkedList extends LinkedList implements DoublyList {
     public head?: DoublyNode = undefined;
     public tail?: DoublyNode = undefined;
     constructor(equalsFn: Function = defaultEquals) { super(equalsFn); }
+
+    push(element: any): void { this.insert(element, this.size); }
+
+    insert(element: any, index: number): boolean {
+        const node = new DoublyNode(element);
+        let current = this.head;
+
+        if (index >= 0 && index <= this.size) {
+            if (index === 0) {
+                if (this.head == null) {
+                    this.head = node;
+                    this.tail = node;
+                } else {
+                    if (this.head) {
+                        this.head.prev = node;
+                        node.next = current;
+                        this.head = node;
+                    }
+                }
+            } else if (index === this.size) {
+                current = this.tail;
+                if (current) {
+                    current.next = node;
+                    node.prev = current;
+                    this.tail = node;
+                }
+            } else {
+                const prev = this.getElementAt(index - 1);
+                current = prev?.next;
+                node.next = current;
+                if (prev && current) {
+                    prev.next = node;
+                    current.next = node;
+                    node.prev = prev;
+                }
+            }
+            this.size++;
+            return true;
+        }
+        return false;
+    }
+
+    removeAt(index: number): any {
+        if (index >= 0 && index < this.size) {
+            let current = this.head;
+
+            if (index === 0) {
+                this.head = current?.next;
+                if (this.size === 1) {
+                    this.tail = undefined;
+                } else {
+                    if (this.head) {
+                        this.head.prev = undefined;
+                    }
+                }
+            } else if (index === this.size - 1) {
+                current = this.tail;
+                this.tail = current?.next;
+                if (this.tail) {
+                    this.tail.next = undefined;
+                }
+            } else {
+                const prev = this.getElementAt(index - 1);
+                current = prev?.next;
+                if (prev && current?.next) {
+                    prev.next = current?.next;
+                    current.next.prev = prev;
+                }
+            }
+            this.size--;
+            return current?.getValue();
+        }
+    }
 }
