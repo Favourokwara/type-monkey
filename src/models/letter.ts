@@ -1,0 +1,1 @@
+export interface LetterNode { character: string, letterIndex: number, wordIndex: number, wordLength: number, }
