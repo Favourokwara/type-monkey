@@ -182,7 +182,7 @@ export class DoublyLinkedList extends LinkedList implements DoublyList {
                 }
             } else if (index === this.size - 1) {
                 current = this.tail;
-                this.tail = current?.next;
+                this.tail = current?.prev;
                 if (this.tail) {
                     this.tail.next = undefined;
                 }
