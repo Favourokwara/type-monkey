@@ -25,7 +25,7 @@ function defaultEquals(a: any, b: any): boolean {
 
 export class SinglyLinkedList implements SinglyList {
   // Define the linked list's state properties
-  private size: number = 0;
+  protected size: number = 0;
   public head?: SinglyLinkedNode = undefined;
   // Get function to compare list item values.
   constructor(private equalsFn: Function = defaultEquals) {}
@@ -125,5 +125,80 @@ export class SinglyLinkedList implements SinglyList {
       current = current?.next;
     }
     return -1;
+  }
+}
+
+export class DoublyLinkedList
+  extends SinglyLinkedList
+  implements DoublyLinkedList
+{
+  // Define the linked list's state properties
+  public head?: DoublyLinkedNode = undefined;
+  public tail?: DoublyLinkedNode = undefined;
+
+  constructor(equalsFn: Function = defaultEquals) {
+    super(equalsFn);
+  }
+
+  push(item: any): void {
+    this.insert(item, this.size);
+  }
+
+  insert(item: any, index: number): boolean {
+    // Create new instance of the doubly linked node
+    const node = new DoublyLinkedNode(item);
+    let current = this.head;
+    // Checks whether the index is within the bounds
+    if (index >= 0 && index <= this.size) {
+      if (index === 0) {
+        if (this.head == null) {
+          (this.head = node), (this.tail = node);
+        } else {
+          if (this.head) {
+            this.head.prev = node;
+            node.next = current;
+            this.head = node;
+          }
+        }
+      } else if (index === this.size) {
+        current = this.tail;
+        if (current) {
+          current.next = node;
+          node.prev = current;
+          this.tail = node;
+        }
+      }
+      this.size++;
+      return true;
+    }
+    return false;
+  }
+
+  removeAt(index: number) {
+    // Checks whether the index is within the bounds
+    if (index >= 0 && index < this.size) {
+      let current = this.head;
+      if (index === 0) {
+        this.head = current?.next;
+        if (this.size === 1) {
+          this.tail = undefined;
+        } else {
+          if (this.head) this.head = undefined;
+        }
+      } else if (index === this.size - 1) {
+        current = this.tail;
+        this.tail = current?.prev;
+        if (this.tail) this.tail.next = undefined;
+      } else {
+        const prev = this.getElementAt(index - 1);
+        current = prev?.next;
+        if (prev != null && current?.next != null) {
+          prev.next = current?.next;
+          current.next.prev = prev;
+        }
+      }
+      this.size--;
+      return current?.getValue();
+    }
   }
 }
