@@ -1,7 +1,6 @@
-// Interface describing a single letter within a sentence
-export interface LetterNode { character: string, letterIndex: number, wordIndex: number, wordLength: number, }
+import { DoublyLinkedNode } from './linked_node';
 
-/** Class used to represent letters within a sentence or character sequence. */
-export class Letter implements LetterNode { 
-    constructor(public character: string, public letterIndex: number, public wordIndex: number, public wordLength: number) {}
+/**Interface that describes the behaviour of a letter within in a sentence. */
+export interface LetterNode extends DoublyLinkedNode {
+  getIndexInWord(): number;
 }
