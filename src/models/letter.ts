@@ -4,3 +4,19 @@ import { DoublyLinkedNode } from './linked_node';
 export interface LetterNode extends DoublyLinkedNode {
   getIndexInWord(): number;
 }
+
+export class Letter extends DoublyLinkedNode implements LetterNode {
+  constructor(
+    _data: any,
+    private _index: number,
+    public next?: DoublyLinkedNode,
+    public prev?: DoublyLinkedNode,
+  ) {
+    super(_data, next, prev);
+  }
+
+  /**Returns the index value of the letter in relation to the word it is in. */
+  getIndexInWord(): number {
+    return this._index;
+  }
+}
