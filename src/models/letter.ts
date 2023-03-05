@@ -5,6 +5,7 @@ export interface LetterNode extends DoublyNode {
   getIndexInWord(): number;
 }
 
+/**Data class that is used to store data within the sentence data structure. */
 export class Letter extends DoublyLinkedNode implements LetterNode {
   constructor(
     _data: any,
