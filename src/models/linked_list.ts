@@ -1,8 +1,13 @@
-import { SinglyLinkedNode, DoublyLinkedNode } from './linked_node';
+import {
+  SinglyLinkedNode,
+  DoublyLinkedNode,
+  DoublyNode,
+  SinglyNode,
+} from './linked_node';
 
 /**Interface that describes the behaviour of the linked list data structure. */
 export interface SinglyList {
-  head?: SinglyLinkedNode;
+  head?: SinglyNode;
   getSize(): number;
   push(item: any): void;
   insert(item: any, index: number): boolean;
@@ -15,7 +20,7 @@ export interface SinglyList {
 
 /**Interface that describes the behaviour of the doubly list data structure. */
 export interface DoublyList extends SinglyList {
-  head: DoublyLinkedNode;
+  head: DoublyNode;
   getElementAt(index: number): DoublyLinkedNode | undefined;
 }
 
