@@ -1,5 +1,5 @@
 /**Abstract class that describes the behavior of a singly linked list node. */
-interface SinglyLinkedNode<Type> {
+export interface SinglyLinkedNode<Type> {
   /**The next value attached to the linked list */
   next?: SinglyLinkedNode<Type>;
 
@@ -8,7 +8,7 @@ interface SinglyLinkedNode<Type> {
 }
 
 /**Abstract class that describes the behavior of a doubly linked list node. */
-interface DoublyLinkedNode<Type> extends SinglyLinkedNode<Type> {
+export interface DoublyLinkedNode<Type> extends SinglyLinkedNode<Type> {
   /**The next value attached to the linked list */
   next?: SinglyLinkedNode<Type>;
 
