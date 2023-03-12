@@ -1,4 +1,4 @@
-import { SinglyLinkedNode } from './linked_nodes';
+import { SinglyLinkedNode, DoublyLinkedNode } from './linked_nodes';
 
 /**Abstract class describing a linked list data structures behaviour.*/
 export interface SinglyLinkedList {
@@ -11,4 +11,11 @@ export interface SinglyLinkedList {
   indexOf(item: any): number;
   isEmpty(): boolean;
   getElementAt(index: number): SinglyLinkedNode<any> | undefined;
+}
+
+/**Abstract class describing a doubly list data structures behaviour.*/
+export interface DoublyLinkedList extends SinglyLinkedList {
+  head?: DoublyLinkedNode<any>;
+  tail?: DoublyLinkedNode<any>;
+  getElementAt(index: number): DoublyLinkedNode<any> | undefined;
 }
