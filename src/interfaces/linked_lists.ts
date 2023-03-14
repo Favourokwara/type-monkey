@@ -3,7 +3,7 @@ import { SinglyLinkedNode, DoublyLinkedNode } from './linked_nodes';
 /**Abstract class describing the behavior of the linked list data structure. */
 export interface SinglyLinkedList {
   /**The first node in the linked list sequence.*/
-  head?: SinglyLinkedNode<any>;
+  head?: SinglyLinkedNode;
 
   /**Appends the specified item to the last node of the of the linked list. */
   push(item: any): void;
@@ -24,17 +24,17 @@ export interface SinglyLinkedList {
   isEmpty(): boolean;
 
   /**Returns the linked list node item within the specified index position. */
-  getElementAt(index: number): SinglyLinkedNode<any> | undefined;
+  getElementAt(index: number): SinglyLinkedNode | undefined;
 }
 
 /**Abstract class describing the behavior of the doubly list data structure.*/
 export interface DoublyLinkedList extends SinglyLinkedList {
   /**The first node in the linked list sequence.*/
-  head?: DoublyLinkedNode<any>;
+  head?: DoublyLinkedNode;
 
   /**The last node in the linked list sequence. */
-  tail?: DoublyLinkedNode<any>;
+  tail?: DoublyLinkedNode;
 
   /**Returns the linked list node item within the specified index position. */
-  getElementAt(index: number): DoublyLinkedNode<any> | undefined;
+  getElementAt(index: number): DoublyLinkedNode | undefined;
 }
