@@ -1,9 +1,9 @@
 /**Abstract class that describes the behavior of a singly linked list node. */
 export interface SinglyLinkedNode {
-  /**The next value attached to the linked list */
+  /**The reference pointing to the next item. */
   next?: SinglyLinkedNode;
 
-  /**Stores the values and data inside the list */
+  /**The value stored by the linked list item. */
   value: any;
 }
 
