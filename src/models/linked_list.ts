@@ -1,66 +1,33 @@
-import {
-  SinglyLinkedNode,
-  DoublyLinkedNode,
-  DoublyNode,
-  SinglyNode,
-} from './linked_node';
+import { SinglyLinkedList, DoublyLinkedList } from '../interfaces/linked_lists';
+import { SinglyNode, DoublyNode } from './linked_node';
 
-/**Interface that describes the behaviour of the linked list data structure. */
-export interface SinglyList {
-  head?: SinglyNode;
-  getSize(): number;
-  push(item: any): void;
-  insert(item: any, index: number): boolean;
-  remove(item: any): void;
-  removeAt(index: number): any;
-  indexOf(item: any): number;
-  isEmpty(): boolean;
-  getElementAt(index: number): SinglyLinkedNode | undefined;
-}
-
-/**Interface that describes the behaviour of the doubly list data structure. */
-export interface DoublyList extends SinglyList {
-  head: DoublyNode;
-  getElementAt(index: number): DoublyLinkedNode | undefined;
-}
-
-function defaultEquals(a: any, b: any): boolean {
+/**Default comparison function for comparing the linked list node item value.*/
+function defaultEquals(a: any, b: any) {
   return a === b;
 }
 
-export class SinglyLinkedList implements SinglyList {
-  // Define the linked list's state properties
-  protected size: number = 0;
-  public head?: SinglyLinkedNode = undefined;
-  // Get function to compare list item values.
+/**Typescript class implementation the singly linked list data structure. */
+export class SinglyList implements SinglyLinkedList {
+  // declare initial state properties
+  protected size = 0;
+  public head?: SinglyNode;
+
   constructor(private equalsFn: Function = defaultEquals) {}
 
-  /**Returns the number of items in the singly linked list data structure. */
   getSize(): number {
     return this.size;
   }
 
-  /**Remove the item in the list that mathces the provided list item value.*/
-  remove(item: any) {
-    return this.removeAt(this.indexOf(item));
-  }
-
-  /**Returns a boolean indicating whether or not the linked list is empty. */
-  isEmpty(): boolean {
-    return this.head === undefined;
-  }
-
-  /**Appends the specified item to the last node of the of the linked list.*/
   push(item: any): void {
-    // Create new instance of the singly linked node
-    const node = new SinglyLinkedNode(item);
-    let current = this.head;
-    // Check whether the linked list is empty or not
-    if (current == null) {
+    // create node item to be appended to the end of the list chain
+    const node = new SinglyNode(item);
+
+    if (this.head == null) {
       this.head = node;
     } else {
-      // Assign the last items's pointer to the newly created singly node
-      while (current?.next != null) {
+      // append the new node to the end of the chain link
+      let current = this.head;
+      while (current.next != null) {
         current = current.next;
       }
       current.next = node;
@@ -68,32 +35,18 @@ export class SinglyLinkedList implements SinglyList {
     this.size++;
   }
 
-  /**Inserts the provided item to the end of the specified index position. */
-  insert(item: any, index: number): boolean {
-    // Check whether or not the specified index position is within range
-    if (index >= 0 && index <= this.size) {
-      // Create a new instance of the singly linked node
-      const node = new SinglyLinkedNode(item);
-
-      if (index === 0) {
-        (node.next = this.head), (this.head = node);
-      } else {
-        // Get the item before the given index and change its pointers
-        // to point towards the newly created node element.
-        let prev = this.getElementAt(index - 1),
-          curr = prev?.next;
-        if (prev) {
-          (node.next = curr), (prev.next = node);
-        }
-      }
+  indexOf(item: any) {
+    let current = this.head;
+    for (let i = 0; i < this.getSize(); i++) {
+      if (this.equalsFn(item, current?.value)) return i;
+      current = current?.next;
     }
-    return false;
+    return -1;
   }
 
-  /**Returns the singly linked node item at the specified index position. */
-  getElementAt(index: number): SinglyLinkedNode | undefined {
-    // Check whether or not the specified index position is within range
-    if (index >= 0 && index < this.size) {
+  getElementAt(index: number): SinglyNode | undefined {
+    // checks whether the provided index position is valid
+    if (index >= 0 && index < this.getSize()) {
       let current = this.head;
 
       for (let i = 0; i < index && current != null; i++) current = current.next;
@@ -101,46 +54,57 @@ export class SinglyLinkedList implements SinglyList {
     }
   }
 
-  /**Removes the item in the linked list at the specified index position. */
+  insert(item: any, index: number): boolean {
+    // check if the provided index is valid or not
+    if (index >= 0 && index <= this.getSize()) {
+      const node = new SinglyNode(item);
+      if (index === 0) {
+        node.next = this.head;
+        this.head = node;
+      } else {
+        let previous = this.getElementAt(index - 1);
+        let current = previous?.next;
+        if (previous) {
+          node.next = current;
+          previous.next = node;
+        }
+      }
+      this.size++;
+      return true;
+    }
+    return false;
+  }
+
   removeAt(index: number) {
-    // Check whether or not the specified index position is within range
-    if (index >= 0 && index < this.size) {
+    // checks whether the specified index position is valid or not
+    if (index >= 0 && index < this.getSize()) {
       let current = this.head;
-      // Check whether we're removing the first item in the linked list
       if (index === 0) {
         this.head = current?.next;
       } else {
-        const prev = this.getElementAt(index - 1);
-        if (prev) {
-          (current = prev.next), (prev.next = current?.next);
+        const previous = this.getElementAt(index - 1);
+        if (previous) {
+          current = previous.next;
+          previous.next = current?.next;
         }
       }
       this.size--;
-      return current?.getValue();
+      return current?.value;
     }
   }
 
-  /**Returns the index if the specified item value inside the linked list. */
-  indexOf(item: any): number {
-    let current = this.head;
-    for (let i = 0; i < this.size; i++) {
-      if (this.equalsFn(item, current?.getValue())) {
-        return i;
-      }
-      current = current?.next;
-    }
-    return -1;
+  remove(item: any): void {
+    this.removeAt(this.indexOf(item));
+  }
+
+  isEmpty(): boolean {
+    return this.head === undefined;
   }
 }
 
-export class DoublyLinkedList
-  extends SinglyLinkedList
-  implements DoublyLinkedList
-{
-  // Define the linked list's state properties
-  public head?: DoublyLinkedNode = undefined;
-  public tail?: DoublyLinkedNode = undefined;
-
+export class DoublyList extends SinglyList implements DoublyLinkedList {
+  public declare head?: DoublyNode;
+  public declare tail?: DoublyNode;
   constructor(equalsFn: Function = defaultEquals) {
     super(equalsFn);
   }
@@ -151,13 +115,14 @@ export class DoublyLinkedList
 
   insert(item: any, index: number): boolean {
     // Create new instance of the doubly linked node
-    const node = new DoublyLinkedNode(item);
+    const node = new DoublyNode(item);
     let current = this.head;
     // Checks whether the index is within the bounds
     if (index >= 0 && index <= this.size) {
       if (index === 0) {
         if (this.head == null) {
-          (this.head = node), (this.tail = node);
+          this.head = node;
+          this.tail = node;
         } else {
           if (this.head) {
             this.head.prev = node;
@@ -188,7 +153,7 @@ export class DoublyLinkedList
         if (this.size === 1) {
           this.tail = undefined;
         } else {
-          if (this.head) this.head = undefined;
+          this.head = undefined;
         }
       } else if (index === this.size - 1) {
         current = this.tail;
@@ -203,7 +168,7 @@ export class DoublyLinkedList
         }
       }
       this.size--;
-      return current?.getValue();
+      return current?.value;
     }
   }
 }
