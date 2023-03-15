@@ -5,10 +5,13 @@ export interface SinglyLinkedList {
   /**The first node in the linked list sequence.*/
   head?: SinglyLinkedNode;
 
+  /**Returns the number of node items within the linked list data structure. */
+  getSize(): number;
+
   /**Appends the specified item to the last node of the of the linked list. */
   push(item: any): void;
 
-  /**Inserts the provided item at the specified index position within range.*/
+  /**Inserts the provided item at the specified index position within range. */
   insert(item: any, index: number): boolean;
 
   /**Removes the node item in the specified index position thats in range. */
@@ -20,14 +23,14 @@ export interface SinglyLinkedList {
   /**Returns the index of the specified item value within the linked list. */
   indexOf(item: any): number;
 
-  /**Returns boolean that indicates whether or not the linked list is empty.*/
+  /**Returns boolean that indicates whether or not the linked list is empty. */
   isEmpty(): boolean;
 
   /**Returns the linked list node item within the specified index position. */
   getElementAt(index: number): SinglyLinkedNode | undefined;
 }
 
-/**Abstract class describing the behavior of the doubly list data structure.*/
+/**Abstract class describing the behavior of the doubly list data structure. */
 export interface DoublyLinkedList extends SinglyLinkedList {
   /**The first node in the linked list sequence.*/
   head?: DoublyLinkedNode;
