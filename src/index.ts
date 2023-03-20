@@ -3,77 +3,95 @@
  * When you're ready to start on your site, clear the file. Happy hacking!
  **/
 
-import { DoublyList } from './models/linked_list';
-import { DoublyNode } from './models/linked_node';
+import { DoublyList } from "./models/linked_list";
+import type { DoublyNode } from "./models/linked_node";
 
-/**Split a string into substrings by the end space boundaries and return them as an array.*/
-function stringToWords(s: String): String[] {
-  return s.split(/(?<=\s)/);
-}
+// import confetti from 'canvas-confetti';
 
-/**Converts the provided string into a doubly linked list indexed by its words positions. */
-function stringToWordList(s: String): DoublyList {
-  const sentence = new DoublyList(),
-    words = stringToWords(s);
+// confetti.create(document.getElementById('canvas') as HTMLCanvasElement, {
+//   resize: true,
+//   useWorker: true,
+// })({ particleCount: 200, spread: 200 });
 
-  for (let i = 0; i < words.length; i++) {
-    for (let j = 0; j < words[i].length; j++) {
-      sentence.push({ character: words[i][j], word: i, letter: j });
-    }
-  }
-  return sentence;
-}
+const list = new DoublyList();
+list.push("1");
+list.push("2");
+list.push("4");
+list.push("5");
+
+list.insert("3", 2);
+list.removeAt(3);
+console.log(list);
 
 class TextController {
-  private reference: DoublyList = stringToWordList(
-    "something fishy is going on and i don't know what it is",
-  );
-  // private actual: DoublyList;
-
-  constructor(private view: TextView) {
-    view.render("something fishy is going on and i don't know what it is");
-  }
+    constructor(view: TextView) {
+        document.addEventListener("keydown", (e) => {
+            console.log("-" + e.key + "-");
+            
+            if (e.key.toLowerCase() == "backspace"){
+                view.moveCursorBackward();
+            } else {
+                view.moveCursorForward();
+            }
+        });
+    }
 }
 
 class TextView {
-  private sentence?: DoublyList;
-  private cursor?: DoublyNode;
+    private sentence: DoublyList;
+    private cursor?: DoublyNode;
 
-  constructor() {
-    this.sentence = new DoublyList();
-    const letters = document.getElementsByClassName('text-letter');
+    constructor() {
+        const textContent = document.getElementById("text-content");
+        textContent?.append(this.stringToSpan("this is the best of my abilities"));
+        const snt = document.getElementsByClassName("text-letter");
+        const lst = new DoublyList();
+        for (let i = 0; i < snt.length; i++) { lst.push(snt[i]) }
+        this.sentence = lst;
+        this.cursor = this.sentence.head;
+        this.renderCursor()
+        // this.moveCursorForward()
+    }
+    
+    stringToSpan(s: string) {
+        const words = s.split(/(?<=\s)/);
+        const sentence = new DocumentFragment();
 
-    for (let i = 0; i < letters.length; i++) {
-      this.sentence.push(letters[i]);
+        for (let i = 0; i < words.length; i++) {
+            const word = document.createElement("span");
+            for (let j = 0; j < words[i].length; j++) {
+                const letter = document.createElement("span");
+                letter.className = "text-letter";
+                letter.textContent = words[i][j];
+                word.appendChild(letter);
+            }
+            sentence.appendChild(word);
+        }
+        return sentence;
     }
 
-    this.cursor = this.sentence.head;
-    if (this.cursor) this.cursor.value.id = 'text-cursor';
-  }
-
-  incrementCursor() {
-    const current = this.cursor;
-    if (current != null) current.value.id = '';
-    this.cursor = current?.next;
-    if (this.cursor != null) this.cursor.value.id = 'text-cursor';
-  }
-
-  render(s: String) {
-    const textContainer = document.getElementById('text-cnt');
-    const sentence = new DocumentFragment(),
-      words = stringToWords(s);
-
-    for (let i = 0; i < words.length; i++) {
-      const word = document.createElement('span');
-      for (let j = 0; j < words[i].length; j++) {
-        const letter = document.createElement('span');
-        letter.innerHTML = words[i][j];
-        word.append(letter);
-      }
-      sentence.append(word);
+    renderCursor() {
+        let cursor = document.getElementById("text-cursor");
+        if (cursor) cursor.id = "";
+        cursor = this.cursor?.value;
+        if(cursor) cursor.id = "text-cursor"
     }
-    textContainer?.appendChild(sentence);
-  }
+
+    moveCursorForward(){
+        if (this.cursor?.next != null) {
+            this.cursor = this.cursor.next;
+        }
+        this.renderCursor()
+    }
+
+    moveCursorBackward() {
+        if (this.cursor?.prev != null) {
+            this.cursor = this.cursor.prev;
+        }
+        this.renderCursor()
+    }
+    
+    getCursor() { this.cursor };
 }
 
 const controller = new TextController(new TextView());

@@ -1,17 +1,13 @@
-import { SinglyLinkedNode, DoublyLinkedNode } from '../interfaces/linked_nodes';
+import type { SinglyLinkedNode, DoublyLinkedNode } from "src/interfaces/linked_node";
 
-/**Data class used for building up and storing data in a singly linked list. */
+/**Data class used to store values inside a singly linked list data structure.*/
 export class SinglyNode implements SinglyLinkedNode {
-  public next?: SinglyNode;
-  constructor(public value: any) {}
+    public next?: SinglyNode;
+    constructor(public value: any) {}
 }
 
-/**Data class used for building up and storing data in a doubly linked list. */
+/**Data class used to store values inside a doubly linked list data structure.*/
 export class DoublyNode extends SinglyNode implements DoublyLinkedNode {
-  public declare next?: DoublyNode;
-  public declare prev?: DoublyNode;
-
-  constructor(value: any) {
-    super(value);
-  }
+    public declare next?: DoublyNode;
+    public declare prev?: DoublyNode;
 }
